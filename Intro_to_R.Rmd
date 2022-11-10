@@ -3,9 +3,10 @@ title: "The student's guide to independence in R"
 author: "Sophie Nolden with the help of Isabelle Ehrlich and Amy Li (Descriptive analysis and plots), and Francesco Pupillo (Inferential analysis)"
 date: "November, 2022"
 output:
-  html_document:
+  md_document:
+    variant: markdown_github
     toc: true
-  pdf_document: default
+    toc_depth: 6
 ---
 
 ## Introduction
