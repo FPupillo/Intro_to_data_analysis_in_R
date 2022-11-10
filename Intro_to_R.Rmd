@@ -85,7 +85,7 @@ You have to be super careful with your raw data. Store it at multiple sites on d
 
 That is why we need an "inPath" and an "outPath", one directory to read from, one to write into. Create a directory with all participants' raw data. If you already know that you want to exclude a participant for whatever reason, you can already omit the respective file at this stage. Create a directory called "Analyses" or something similar. Always choose meaningful names and avoid spaces or special characters.
 
-```{r eval=FALSE, include=FALSE}
+```{r eval=FALSE, include=T}
 # Define inPath
 inPath <- "/home/soph/Documents/thesis/HolyFolder/"
 # Define outPath
@@ -108,7 +108,7 @@ Remember that your paths should be defined at the beginning of your file.
 
 As you begin using R in more of your projects, some of which may involve collaboration, you may begin to notice that dealing with paths and working directories can get, well, pesky. An example: your colleague Bailey sends you a folder with their data and analysis scripts. In the script, they begin with setting the working directory using: 
 
-```{undefined eval=FALSE, include=FALSE}
+```{undefined eval=FALSE, include=T}
 setwd("C/Users/bailey/Documents/projectA/analysis/")
 ```
 
@@ -126,34 +126,44 @@ A package that offers answers to these issues is the here() package. Combined wi
 * We very often read data from csv files. There are specific functions for reading csv files that you can use. I personally prefer the function "fread" because it can handle various data types quite easily.  
 This is how you can read all your participants' data files into one data frame at once:
 
-  library(data.table) # fread is part of the library "data.table"`
-  `filenames <- list.files(inPath, pattern="*.csv", full.names=TRUE) # Create a list of your data files`
-  `myData <- rbindlist(lapply(filenames,fread),fill=TRUE) # Read in your data files and concatenate them to one big data frame.
-  
-* Sometimes, you may need to open data files saved with SPSS. SPSS is a commercial software and not everybody may have the license installed, so it can be quite tricky to open these kinds of files. I suggest to use the package "haven" for this matter.
+```{r eval=FALSE, include=T}
 
-  `library(haven) # This library is useful to deal with SPSS files.'`
-  `SPSSfile <- "myOtherData.sav" # Define the name of your SPSS file.`
-  `myOtherData <- read_sav(paste(inPath, SPSSfile, sep = "")) # Read in SPSS data. Note how I used "paste" to concatenate two character values (your path name and your file name).`
-  
+  library(data.table) # fread is part of the library "data.table"`
+  filenames <- list.files(inPath, pattern="*.csv", full.names=TRUE) # Create a list of your data files`
+  myData <- rbindlist(lapply(filenames,fread),fill=TRUE) # Read in your data files and concatenate them to one big data frame.
+```
+
+Sometimes, you may need to open data files saved with SPSS. SPSS is a commercial software and not everybody may have the license installed, so it can be quite tricky to open these kinds of files. I suggest to use the package "haven" for this matter.
+
+```{r, eval=F}
+library(haven) # This library is useful to deal with SPSS files.'`
+SPSSfile <- "myOtherData.sav" # Define the name of your SPSS file.`
+myOtherData <- read_sav(paste(inPath, SPSSfile, sep = "")) # Read in SPSS data. Note how I used "paste" to concatenate two character values (your path name and your file name).`
+ 
+``` 
+
 * If you tested mutliple groups (e.g., children, young adults, and older adults), you may want to organize their data in different folders. In this case, I recommend to loop through these folders and add up all files into one single data frame. Just provide a vector of character values as "inPath", with each character vector representing one path.
 
-  ```{r}
+```{r, eval = F}
   # Define inPath
   inPath <- c("/home/soph/Documents/thesis/HolyFolder/Child/"
               , "/home/soph/Documents/thesis/HolyFolder/YA/"
               , "/home/soph/Documents/thesis/HolyFolder/Child/OA/")
-  ```
+```
 
   Next, create an empty data frame with the same amount of columns and the same column name as in your actual raw data.
 
-  `allGroups <- setNames(data.frame(matrix(ncol = 9, nrow = 0))`
-                       `, c("participant", "group", "age", "sex", "handedness"`
-                       `, "IV1", "IV2", "DV1", "DV2"))`
-                     
-  Loop through the different directories and read the data from each directory one after another (e.g., into a data frame called "myData"). Add it all to your empty data frame at the end of each iteration.
+```{r}
+allGroups <- setNames(data.frame(matrix(ncol = 9, nrow = 0)),
+                    c("participant", "group", "age", "sex", "handedness",
+                       "IV1", "IV2", "DV1", "DV2"))
 
-  `allGroups <- rbind(allGroups, myData)`
+```                       
+Loop through the different directories and read the data from each directory one after another (e.g., into a data frame called "myData"). Add it all to your empty data frame at the end of each iteration.
+
+```{r, eval=F}
+  allGroups <- rbind(allGroups, myData)
+```
 
   Tip 1 for using loops: Restrict the use of loops to a minimum, since R is not really fast dealing with loops (but it will do it eventually).
   

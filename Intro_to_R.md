@@ -178,6 +178,15 @@ whatever reason, you can already omit the respective file at this stage.
 Create a directory called “Analyses” or something similar. Always choose
 meaningful names and avoid spaces or special characters.
 
+``` r
+# Define inPath
+inPath <- "/home/soph/Documents/thesis/HolyFolder/"
+# Define outPath
+outPath <- "/home/soph/Documents/thesis/Analyses/"
+inPath
+outPath
+```
+
 It is very common that there are errors in your paths. In order to avoid
 typos, I suggest that you browse to your directory and then copy the
 path from there (e.g., from your browser header, or by selecting the
@@ -207,6 +216,10 @@ working directories can get, well, pesky. An example: your colleague
 Bailey sends you a folder with their data and analysis scripts. In the
 script, they begin with setting the working directory using:
 
+``` undefined
+setwd("C/Users/bailey/Documents/projectA/analysis/")
+```
+
 Or at various points in the file, they load data using:
 
 It’s easy to see how the specificity of file paths can quickly get
@@ -234,20 +247,22 @@ pun intended).
     This is how you can read all your participants’ data files into one
     data frame at once:
 
-    library(data.table) \# fread is part of the library
-    “data.table”``filenames \<- list.files(inPath, pattern=“\*.csv”,
-    full.names=TRUE) \# Create a list of your data files``myData \<-
-    rbindlist(lapply(filenames,fread),fill=TRUE) \# Read in your data
-    files and concatenate them to one big data frame.
+``` r
+  library(data.table) # fread is part of the library "data.table"`
+  filenames <- list.files(inPath, pattern="*.csv", full.names=TRUE) # Create a list of your data files`
+  myData <- rbindlist(lapply(filenames,fread),fill=TRUE) # Read in your data files and concatenate them to one big data frame.
+```
 
--   Sometimes, you may need to open data files saved with SPSS. SPSS is
-    a commercial software and not everybody may have the license
-    installed, so it can be quite tricky to open these kinds of files. I
-    suggest to use the package “haven” for this matter.
+Sometimes, you may need to open data files saved with SPSS. SPSS is a
+commercial software and not everybody may have the license installed, so
+it can be quite tricky to open these kinds of files. I suggest to use
+the package “haven” for this matter.
 
-    `library(haven) # This library is useful to deal with SPSS files.'`
-    `SPSSfile <- "myOtherData.sav" # Define the name of your SPSS file.`
-    `myOtherData <- read_sav(paste(inPath, SPSSfile, sep = "")) # Read in SPSS data. Note how I used "paste" to concatenate two character values (your path name and your file name).`
+``` r
+library(haven) # This library is useful to deal with SPSS files.'`
+SPSSfile <- "myOtherData.sav" # Define the name of your SPSS file.`
+myOtherData <- read_sav(paste(inPath, SPSSfile, sep = "")) # Read in SPSS data. Note how I used "paste" to concatenate two character values (your path name and your file name).`
+```
 
 -   If you tested mutliple groups (e.g., children, young adults, and
     older adults), you may want to organize their data in different
@@ -256,35 +271,37 @@ pun intended).
     of character values as “inPath”, with each character vector
     representing one path.
 
-    ``` r
-    # Define inPath
-    inPath <- c("/home/soph/Documents/thesis/HolyFolder/Child/"
-                , "/home/soph/Documents/thesis/HolyFolder/YA/"
-                , "/home/soph/Documents/thesis/HolyFolder/Child/OA/")
-    ```
+``` r
+  # Define inPath
+  inPath <- c("/home/soph/Documents/thesis/HolyFolder/Child/"
+              , "/home/soph/Documents/thesis/HolyFolder/YA/"
+              , "/home/soph/Documents/thesis/HolyFolder/Child/OA/")
+```
 
-    Next, create an empty data frame with the same amount of columns and
-    the same column name as in your actual raw data.
+Next, create an empty data frame with the same amount of columns and the
+same column name as in your actual raw data.
 
-    `allGroups <- setNames(data.frame(matrix(ncol = 9, nrow = 0))`
-    `, c("participant", "group", "age", "sex", "handedness"`
-    `, "IV1", "IV2", "DV1", "DV2"))`
+``` r
+allGroups <- setNames(data.frame(matrix(ncol = 9, nrow = 0)),
+                    c("participant", "group", "age", "sex", "handedness",
+                       "IV1", "IV2", "DV1", "DV2"))
+```
 
-    Loop through the different directories and read the data from each
-    directory one after another (e.g., into a data frame called
-    “myData”). Add it all to your empty data frame at the end of each
-    iteration.
+Loop through the different directories and read the data from each
+directory one after another (e.g., into a data frame called “myData”).
+Add it all to your empty data frame at the end of each iteration.
 
-    `allGroups <- rbind(allGroups, myData)`
+``` r
+  allGroups <- rbind(allGroups, myData)
+```
 
-    Tip 1 for using loops: Restrict the use of loops to a minimum, since
-    R is not really fast dealing with loops (but it will do it
-    eventually).
+Tip 1 for using loops: Restrict the use of loops to a minimum, since R
+is not really fast dealing with loops (but it will do it eventually).
 
-    Tip 2 for using loops: Use a meaningful term for the value that
-    changes at each iteration. “val” or “i” are not meaningful, but
-    “iGroup” or “iParticipant” are. This will help you to keep track of
-    what you are actually doing, especially in nested loops.
+Tip 2 for using loops: Use a meaningful term for the value that changes
+at each iteration. “val” or “i” are not meaningful, but “iGroup” or
+“iParticipant” are. This will help you to keep track of what you are
+actually doing, especially in nested loops.
 
 -   In some cases, multiple files per participant are generated and you
     may want merge the different files. For example, you have one file
@@ -1019,7 +1036,7 @@ ggplot(Easyinfo, aes(x=stimType, y=Pr, colour=stimType)) + # Here you specify th
     ## geom_path: Each group consists of only one observation. Do you need to adjust
     ## the group aesthetic?
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-35-1.png)
 
 Another very easy way to get the same plot (but with less info and way
 uglier):
@@ -1040,7 +1057,7 @@ library(gplots)
 plotmeans(Pr ~ stimType, data = example5)
 ```
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-36-1.png)
 
 ``` r
 #But this is really only for the lazy ppl - stick with the 1st version if possible.
@@ -1085,7 +1102,7 @@ ggplot(Easyinfo_within, aes(x=stimType, y=Pr, colour=stimType)) +
     ## geom_path: Each group consists of only one observation. Do you need to adjust
     ## the group aesthetic?
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-34-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-38-1.png)
 
 #### Data visualisation magic
 
@@ -1111,7 +1128,7 @@ ggplot(example5, aes(stimType, Pr, fill=stimType)) + # `fill=` assignes differen
 
     ## Warning: Removed 2 rows containing missing values (geom_segment).
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-35-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-39-1.png)
 
 You can change `notch` to `TRUE`. This will give you roughly a 95% CI
 around the median. This is usually used to compare groups and if the
@@ -1131,7 +1148,7 @@ ggplot(example5, aes(stimType, Pr, fill=stimType)) + # `fill=` assignes differen
 
     ## Warning: Removed 2 rows containing missing values (geom_segment).
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-36-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-40-1.png)
 
 ##### Adding titles and labels
 
@@ -1159,7 +1176,7 @@ ggplot(example5, aes(stimType, Pr, fill=stimType)) +
 
     ## Warning: Removed 2 rows containing missing values (geom_segment).
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-37-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-41-1.png)
 
 However, you will notice that this is not completely satisfactory for
 our x-axis and legend, since the variable stimType that is involved here
@@ -1190,7 +1207,7 @@ ggplot(example5, aes(stimType, Pr, fill=stimType)) +
 
     ## Warning: Removed 2 rows containing missing values (geom_segment).
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-38-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-42-1.png)
 
 Now we have plots that make reasonable sense for any reader from a quick
 glance, hurrah!
@@ -1237,7 +1254,7 @@ ggplot(example5, aes(stimType, Pr, fill=stimType)) +
 
     ## Warning: Removed 2 rows containing missing values (geom_segment).
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-39-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-43-1.png)
 
 ##### Fancy Barplots
 
@@ -1290,7 +1307,7 @@ ggplot(example6, aes(animal, fill=animal)) +
    "Animal") 
 ```
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-40-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-44-1.png)
 
 Nice!! - naturally, the **Otter** is clearly the [most favourite
 animal!](https://i.kym-cdn.com/photos/images/original/001/550/716/eff.jpg)
@@ -1327,7 +1344,7 @@ ggplot(example7, aes(x=Pr , y=rt)) +
   geom_point() # makes a scatter plot using x and y variables specified in aes()
 ```
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-42-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-46-1.png)
 
 Okay, it looks like maybe something is going on here. While we could try
 and fit a single regression line through the above data points, it could
@@ -1342,7 +1359,7 @@ ggplot(example7, aes(x=Pr, y=rt, color=stimType, shape=stimType)) +
 
     ## `geom_smooth()` using formula 'y ~ x'
 
-![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-43-1.png)
+![](Intro_to_R_files/figure-markdown_github/unnamed-chunk-47-1.png)
 
 As we can see here, this visualisation is quite informative, reflecting
 that the correlation between recognition probability and reaction time
