@@ -8,6 +8,7 @@ output:
     toc: true
     toc_depth: 6
 ---
+Thanks to Sophie Nolden, who created this file, with the help of Isabelle Ehrlich and Amy Li (Descriptive analysis and plots)
 
 ## Introduction
 
@@ -17,8 +18,6 @@ In this document, I will provide some tips that are meant to help you to use R i
 Please make sure that you always try to figure out the solution yourself first. If you are stuck, ask your peers (or your supervisor if your peers cannot help you), and make sure that you provide all the information needed to understand both your question and your first approach to solve the problem.  
 
 Enjoy reading! 
-
-You should be familiar with some basics in R before you continue. Check out [my introductory file](to be provided).  
 
 If you need more input, I suggest to work with an online tutorial of your choice. For example, check out these three ([1](https://djnavarro.github.io/chdss2018/day0/introtoR1-handout.pdf), [2](https://djnavarro.github.io/chdss2018/day0/introtoR2-handout.pdf), [3](https://djnavarro.github.io/chdss2018/day0/introtoR3-handout.pdf)) suggestions on first steps in R. And, last but not least, check out the suggestions on our [lab manual](https://gitlab.com/Soph87/LISCOlab/-/wikis/LISCOLabManual#behavioral-analyses)!  
 

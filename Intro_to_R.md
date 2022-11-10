@@ -22,6 +22,9 @@
             -   [Visualising correlations with scatter
                 plots](#visualising-correlations-with-scatter-plots)
 
+Thanks to Sophie Nolden, who created this file, with the help of
+Isabelle Ehrlich and Amy Li (Descriptive analysis and plots)
+
 ## Introduction
 
 Dear students, In this document, I will provide some tips that are meant
@@ -39,9 +42,6 @@ information needed to understand both your question and your first
 approach to solve the problem.
 
 Enjoy reading!
-
-You should be familiar with some basics in R before you continue. Check
-out [my introductory file](to%20be%20provided).
 
 If you need more input, I suggest to work with an online tutorial of
 your choice. For example, check out these three
